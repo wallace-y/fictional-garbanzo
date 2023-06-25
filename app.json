@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0b122452-b965-4c4c-b02d-48a95e16eda6"
+      }
+    },
+    "owner": "wallace-y"
   }
 }
