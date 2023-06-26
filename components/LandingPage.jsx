@@ -8,24 +8,14 @@ const CouponList = ({ navigation }) => (
     <Text style={styles.heading} variant="displayLarge">
       Careful Coupons.
     </Text>
-    <Button
-      mode="contained"
-      onPress={() => navigation.navigate("CouponCreator")}
-      type="elevated"
-      style={styles.button}
-      labelStyle={styles.buttonText}
-    >
-      Create Coupons
-    </Button>
-    <Button
-      mode="contained"
-      onPress={() => navigation.navigate("CouponList")}
-      type="elevated"
-      style={styles.button}
-      labelStyle={styles.buttonText}
-    >
-      View My Coupons
-    </Button>
+
+    <Text style={styles.heading} variant="displaySmall">
+      Create. Share. Care.
+    </Text>
+    <Text style={styles.heading}>
+      Create personal coupons for those you love. Share your personal coupon
+      book. Show you care.
+    </Text>
   </View>
 );
 
@@ -36,10 +26,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
+    padding: 16,
   },
   heading: {
     marginBottom: 32,
+    textAlign: "center",
   },
   button: {
     marginVertical: 8,
