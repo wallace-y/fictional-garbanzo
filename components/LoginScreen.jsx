@@ -1,6 +1,6 @@
-import { KeyboardAvoidingView, View } from "react-native";
+import { KeyboardAvoidingView, View, StyleSheet } from "react-native";
 import React, { useState } from "react";
-import { TextInput, ActivityIndicator, Button } from "react-native-paper";
+import { TextInput, ActivityIndicator, Button, Text } from "react-native-paper";
 import { auth } from "../firebaseConfig.js";
 import {
   signInWithEmailAndPassword,
@@ -40,39 +40,53 @@ const LoginScreen = () => {
     }
   };
   return (
-    <KeyboardAvoidingView behavior="padding">
-      <View>
-        <TextInput
-          label="Email"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          label="Password"
-          secureTextEntry={true}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-      </View>
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <Text variant="displayLarge">Careful Coupons.</Text>
+      <TextInput
+        label="Email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+        mode="outlined"
+      />
+      <TextInput
+        mode="outlined"
+        label="Password"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+      />
       {loading ? (
         <ActivityIndicator animating={true} size={"large"} color="#0000ff" />
       ) : (
-        <>
-          <View>
-            <Button mode="contained" onPress={signIn}>
-              Login
-            </Button>
-          </View>
-          <View>
-            
-            <Button mode="outlined" onPress={signUp}>
-              Register
-            </Button>
-          </View>
-        </>
+        <View style={styles.buttonGroup}>
+          <Button mode="contained" onPress={signIn} style={styles.button}>
+            Login
+          </Button>
+          <Button mode="contained-tonal" onPress={signUp} style={styles.button}>
+            Register
+          </Button>
+          <Text variant="bodySmall" style={styles.forgotPw}>Forgot password?</Text>
+        </View>
       )}
     </KeyboardAvoidingView>
   );
 };
 
 export default LoginScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 16,
+  },
+  buttonGroup: {
+    marginTop: 16,
+  },
+  button: {
+    marginBottom: 10,
+  },
+  forgotPw: {
+    textAlign: "center"
+  }
+});
