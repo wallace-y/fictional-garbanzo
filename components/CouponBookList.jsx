@@ -22,6 +22,7 @@ export default function CouponBookList({ navigation }) {
     }
   }, []);
 
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading} variant="displayLarge">
@@ -41,13 +42,14 @@ export default function CouponBookList({ navigation }) {
                 <CouponCard
                   title={coupon.title}
                   image={coupon.image}
-                  coupon_id={coupon.coupon_id}
+                  coupon_book_id={coupon.coupon_book_id}
                   sender_name={coupon.sender_name}
                   onOpen={() =>
                     navigation.navigate("IndividualCouponBook", {
                       title: coupon.title,
-                      coupon_id: coupon.coupon_id,
+                      coupon_book_id: coupon.coupon_book_id,
                       sender_name: coupon.sender_name,
+                      image: coupon.image
                     })
                   }
                 />

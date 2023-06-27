@@ -1,67 +1,106 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
-import { List, Text, ActivityIndicator, Button } from "react-native-paper";
-import { getAllCouponBooks } from "../utils/fetchCouponBooks";
-import CouponCard from "./CouponCard";
+import { View, StyleSheet, ScrollView, Image } from "react-native";
+import {
+  List,
+  Text,
+  ActivityIndicator,
+  Button,
+  Avatar,
+} from "react-native-paper";
+import { getIndividualCouponBook } from "../utils/fetchIndividualCouponBook";
 
 export default function IndividualCouponBook({ route, navigation }) {
-
-const {coupon_id, image, sender_name, title} = route.params
+  const { coupon_book_id, image, sender_name, title } = route.params;
 
   const [allCoupons, setAllCoupons] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  //   useEffect(() => {
-  //     try {
-  //       setLoading(true);
-  //       getAllCouponBooks().then((data) => {
-  //         setAllCoupons(data);
-  //       });
-  //     } catch (err) {
-  //       console.log(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }, []);
+  useEffect(() => {
+    try {
+      setLoading(true);
+      getIndividualCouponBook(coupon_book_id).then((data) => {
+        setAllCoupons(data);
+      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading} variant="displayLarge">
-        Your Tokens from {sender_name}
-      </Text>
-      <Text style={styles.heading} variant="displayLarge">
-        {title}
-      </Text>
-      <Button onPress={() => navigation.goBack() }>Go Back</Button>
-      {/* {loading ? (
+      <View style={styles.header}>
+        <Text style={styles.heading} variant="displaySmall">
+          {title}
+        </Text>
+        <Button onPress={() => navigation.goBack()}>Go Back</Button>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image source={{ uri: image }} style={styles.cover} />
+        <View style={styles.senderInfo}>
+          <Text style={styles.senderText}>Sent by: {sender_name}</Text>
+          <Avatar.Image
+            size={64}
+            source={{ uri: "https://picsum.photos/100" }}
+          />
+        </View>
+      </View>
+      {loading ? (
         <ActivityIndicator animating={true} size={"large"} color="#0000ff" />
       ) : (
-        <List.AccordionGroup>
-          {allCoupons.map((coupon, index) => {
-            return (
-              <List.Accordion
-                title={`Your tokens from ${coupon.sender_name}`}
-                id={`coupon-${index}`}
-                key={index}
-              >
-                <CouponCard title={coupon.title} image={coupon.image} />
-              </List.Accordion>
-            );
-          })}
-        </List.AccordionGroup>
-      )} */}
+        <ScrollView>
+          <List.Section>
+            {allCoupons.map((coupon, index) => {
+              return (
+                <List.Item
+                  key={index}
+                  title={coupon.title}
+                  description={coupon.content}
+                  left={() => <List.Icon icon="account-cowboy-hat" />}
+                />
+              );
+            })}
+          </List.Section>
+        </ScrollView>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: "center",
     marginTop: "20%",
+    padding: 16,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
   },
   heading: {
-    marginBottom: 32,
+    fontSize: 20,
+    fontWeight: "bold",
     textAlign: "center",
+    marginBottom: 8,
+  },
+  imageContainer: {
+    marginBottom: 16,
+    alignItems: "center",
+  },
+  cover: {
+    width: "100%",
+    height: 200,
+    marginBottom: 8,
+  },
+  senderInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  senderText: {
+    marginRight: 8,
   },
 });

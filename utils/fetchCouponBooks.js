@@ -10,7 +10,7 @@ const getAllCouponBooks = async () => {
   const querySnapshot = await getDocs(q);
   const allCouponBooks = []
   querySnapshot.forEach((doc) => {
-    allCouponBooks.push({coupon_id: doc.id,...doc.data()})
+    allCouponBooks.push({coupon_book_id: doc.id,...doc.data()})
   });
   return allCouponBooks
 };
