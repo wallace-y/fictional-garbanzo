@@ -41,7 +41,7 @@ const LoginScreen = () => {
   };
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Text variant="displayLarge">Careful Coupons.</Text>
+      <Text variant="displayLarge">Tender Tokens.</Text>
       <TextInput
         label="Email"
         value={email}

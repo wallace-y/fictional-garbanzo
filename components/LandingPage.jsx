@@ -1,21 +1,20 @@
 import * as React from "react";
 import { Text } from "react-native-paper";
 import { View, StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
 
-const CouponList = ({ navigation }) => (
+const CouponList = () => (
   <View style={styles.container}>
     <Text style={styles.heading} variant="displayLarge">
-      Careful Coupons.
+      Tender Tokens.
     </Text>
-
     <Text style={styles.heading} variant="displaySmall">
       Create. Share. Care.
     </Text>
     <Text style={styles.heading}>
-      Create personal coupons for those you love. Share your personal coupon
-      book. Show you care.
+      Create personal tokens for those you love.
     </Text>
+    <Text style={styles.heading}>Share your personal token book.</Text>
+    <Text style={styles.heading}>Show you care.</Text>
   </View>
 );
 
