@@ -1,30 +1,51 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import { List, Text } from "react-native-paper";
-import Coupon from "./CouponCard";
+import { List, Text, ActivityIndicator } from "react-native-paper";
+import { getAllCouponBooks } from "../utils/fetchCouponBooks";
+import CouponCard from "./CouponCard";
 
-const CouponList = () => (
-  <View style={styles.container}>
-    <Text style={styles.heading} variant="displayLarge">
-      Your Tokens.
-    </Text>
-    <List.AccordionGroup>
-      <List.Accordion title="Your tokens from Paul" id="1">
-        <Coupon title="Paul's Coupons for Cam" subtitle="Happy birthday!"/>
-      </List.Accordion>
+export default function CouponList() {
+  const [allCoupons, setAllCoupons] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-      <List.Accordion title="Your token from Corinna" id="2">
-        <Coupon />
-      </List.Accordion>
+  useEffect(() => {
+    try {
+      setLoading(true);
+      getAllCouponBooks().then((data) => {
+        setAllCoupons(data);
+      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-      <List.Accordion title="Your tokens from Sally" id="3">
-        <Coupon />
-      </List.Accordion>
-    </List.AccordionGroup>
-  </View>
-);
-
-export default CouponList;
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading} variant="displayLarge">
+        Your Tokens.
+      </Text>
+      {loading ? (
+        <ActivityIndicator animating={true} size={"large"} color="#0000ff" />
+      ) : (
+        <List.AccordionGroup>
+          {allCoupons.map((coupon, index) => {
+            return (
+              <List.Accordion title={`Your tokens from ${coupon.sender_name}`} id={`coupon-${index}`} key={index}>
+                <CouponCard
+                  title={coupon.title}
+                  image={coupon.image}
+                />
+              </List.Accordion>
+            );
+          })}
+        </List.AccordionGroup>
+      )}
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
