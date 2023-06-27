@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text } from "react-native-paper";
 import { View, StyleSheet } from "react-native";
 
-const CouponList = () => (
+const LandingPage = () => (
   <View style={styles.container}>
     <Text style={styles.heading} variant="displayLarge">
       Tender Tokens.
@@ -18,7 +18,7 @@ const CouponList = () => (
   </View>
 );
 
-export default CouponList;
+export default LandingPage;
 
 const styles = StyleSheet.create({
   container: {

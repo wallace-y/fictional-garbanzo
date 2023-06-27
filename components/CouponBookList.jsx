@@ -5,7 +5,7 @@ import { List, Text, ActivityIndicator } from "react-native-paper";
 import { getAllCouponBooks } from "../utils/fetchCouponBooks";
 import CouponCard from "./CouponCard";
 
-export default function CouponList() {
+export default function CouponBookList({ navigation }) {
   const [allCoupons, setAllCoupons] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -33,10 +33,23 @@ export default function CouponList() {
         <List.AccordionGroup>
           {allCoupons.map((coupon, index) => {
             return (
-              <List.Accordion title={`Your tokens from ${coupon.sender_name}`} id={`coupon-${index}`} key={index}>
+              <List.Accordion
+                title={`Your tokens from ${coupon.sender_name}`}
+                id={`coupon-${index}`}
+                key={index}
+              >
                 <CouponCard
                   title={coupon.title}
                   image={coupon.image}
+                  coupon_id={coupon.coupon_id}
+                  sender_name={coupon.sender_name}
+                  onOpen={() =>
+                    navigation.navigate("IndividualCouponBook", {
+                      title: coupon.title,
+                      coupon_id: coupon.coupon_id,
+                      sender_name: coupon.sender_name,
+                    })
+                  }
                 />
               </List.Accordion>
             );

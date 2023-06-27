@@ -4,7 +4,8 @@ import { name as appName } from "./app.json";
 import { PaperProvider } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import LandingPage from "./components/LandingPage.jsx";
-import CouponList from "./components/CouponList.jsx";
+import CouponBookList from "./components/CouponBookList.jsx";
+import IndividualCouponBook from "./components/IndividualCouponBook.jsx"
 import LoginScreen from "./components/LoginScreen.jsx";
 import CouponCreator from "./components/CouponCreator.jsx";
 import { auth } from "./firebaseConfig";
@@ -12,8 +13,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -35,7 +35,6 @@ export default function App() {
     activeTintColor: "#6200ee",
     inactiveTintColor: "gray",
     labelStyle: { fontSize: 16, fontWeight: "bold" },
-
   };
 
   const homeStackOptions = {
@@ -50,15 +49,13 @@ export default function App() {
     tabBarIcon: ({ focused, color, size }) => {
       return <Ionicons name="create-outline" size={size} color={color} />;
     },
-
   };
 
-  const couponListStackOptions = {
+  const couponBookListStackOptions = {
     headerShown: false,
     tabBarIcon: ({ focused, color, size }) => {
       return <Ionicons name="book-outline" size={size} color={color} />;
     },
-
   };
 
   const HomeStackScreen = () => (
@@ -66,6 +63,21 @@ export default function App() {
       <Stack.Screen
         name="Landing"
         component={LandingPage}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+
+  const CouponBookScreen = () => (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="CouponBookList"
+        component={CouponBookList}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="IndividualCouponBook"
+        component={IndividualCouponBook}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -88,8 +100,8 @@ export default function App() {
             />
             <Tab.Screen
               name="Read"
-              component={CouponList}
-              options={couponListStackOptions}
+              component={CouponBookScreen}
+              options={couponBookListStackOptions}
             />
           </Tab.Navigator>
         ) : (
