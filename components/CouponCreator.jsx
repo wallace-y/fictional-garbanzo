@@ -1,6 +1,6 @@
 import * as ImagePicker from "expo-image-picker";
 import { getApps, initializeApp } from "firebase/app";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -26,80 +26,30 @@ if (!getApps().length) {
 // Firebase sets some timeers for a long period, which will trigger some warnings. Let's turn that off for this example
 LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
-export default class CouponCreator extends React.Component {
-  state = {
-    image: null,
-    uploading: false,
-    couponBookName: null,
-  };
+export default function CouponCreator({ navigation }) {
+  const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [couponBookName, setCouponBookName] = useState(null);
 
-  async componentDidMount() {
+  useEffect(() => {
     if (Platform.OS !== "web") {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
-      }
+      requestMediaLibraryPermissions();
     }
-  }
+  }, []);
 
-  _setCouponBookName = (name) => {
-    this.setState({ couponBookName: name });
+  const requestMediaLibraryPermissions = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+    }
   };
 
-  render() {
-    let { couponBookName, image } = this.state;
+  const handleSetCouponBookName = (name) => {
+    setCouponBookName(name);
+  };
 
-    return (
-      <ScrollView>
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          {!!image && (
-            <Text
-              style={{
-                fontSize: 20,
-                marginBottom: 20,
-                textAlign: "center",
-                marginHorizontal: 15,
-              }}
-            >
-              Are you happy with this image? Note: you can change this later.
-            </Text>
-          )}
-          <Text variant="displayMedium">Create a new coupon book</Text>
-          <Text variant="titleMedium">Choose a name for your coupon book</Text>
-          <TextInput
-            label="Coupon Book Name"
-            value={couponBookName}
-            onChangeText={this._setCouponBookName}
-          ></TextInput>
-          <Text variant="titleMedium">
-            Choose a photo to be your coupon book cover
-          </Text>
-
-          <Button mode="outlined" onPress={this._pickImage}>
-            Camera
-          </Button>
-
-          <Button mode="outlined" onPress={this._takePhoto}>
-            Take Photo
-          </Button>
-
-          {this._maybeRenderImage()}
-          {this._maybeRenderUploadingOverlay()}
-
-          <Text variant="titleMedium">If you're happy press create below.</Text>
-          <Button mode="outlined" onPress={this._handleCreateNewCouponBook}>
-            Create
-          </Button>
-
-          <StatusBar barStyle="default" />
-        </View>
-      </ScrollView>
-    );
-  }
-
-  _maybeRenderUploadingOverlay = () => {
-    if (this.state.uploading) {
+  const renderUploadingOverlay = () => {
+    if (uploading) {
       return (
         <View
           style={[
@@ -117,8 +67,7 @@ export default class CouponCreator extends React.Component {
     }
   };
 
-  _maybeRenderImage = () => {
-    let { image } = this.state;
+  const maybeRenderImage = () => {
     if (!image) {
       return;
     }
@@ -146,8 +95,8 @@ export default class CouponCreator extends React.Component {
           <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
         </View>
         <Text
-          onPress={this._copyToClipboard}
-          onLongPress={this._share}
+          onPress={copyToClipboard}
+          onLongPress={share}
           style={{ paddingVertical: 10, paddingHorizontal: 10 }}
         >
           {image}
@@ -156,44 +105,43 @@ export default class CouponCreator extends React.Component {
     );
   };
 
-  _share = () => {
+  const share = () => {
     Share.share({
-      message: this.state.image,
+      message: image,
       title: "Check out this photo",
-      url: this.state.image,
+      url: image,
     });
   };
 
-  _copyToClipboard = () => {
-    Clipboard.setString(this.state.image);
+  const copyToClipboard = () => {
+    Clipboard.setString(image);
     alert("Copied image URL to clipboard");
   };
 
-  _takePhoto = async () => {
+  const takePhoto = async () => {
     let pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
 
-    this._handleImagePicked(pickerResult);
+    handleImagePicked(pickerResult);
   };
 
-  _pickImage = async () => {
+  const pickImage = async () => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
 
-    this._handleImagePicked(pickerResult);
+    handleImagePicked(pickerResult);
   };
 
-  _handleImagePicked = async (pickerResult) => {
+  const handleImagePicked = async (pickerResult) => {
     try {
-      this.setState({ uploading: true });
-
+      setUploading(true);
       if (!pickerResult.canceled) {
         const uploadUrl = await uploadImageAsync(pickerResult.assets[0].uri);
-        this.setState({ image: uploadUrl });
+        setImage(uploadUrl);
       }
     } catch (e) {
       console.log("Upload error", e.message);
@@ -201,50 +149,100 @@ export default class CouponCreator extends React.Component {
 
       alert("Upload failed, sorry :(");
     } finally {
-      this.setState({ uploading: false });
+      setUploading(false);
     }
   };
 
-  _handleCreateNewCouponBook = () => {
-    // const { couponBookName, image } = this.state;
+  const handleCreateNewCouponBook = () => {
     try {
-      addNewCouponBook()
+      addNewCouponBook(couponBookName, image).then((res) => {
+        alert("Coupon book created with id: " + res);
+      });
     } catch (err) {
       console.log(err);
     }
   };
-}
 
-async function uploadImageAsync(uri) {
-  const storage = getStorage()
+  const uploadImageAsync = async (uri) => {
+    const storage = getStorage();
 
-  function generateUniqueID() {
-    const timestamp = Date.now().toString();
-    const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    return `${timestamp}-${randomNum}`;
-  }
+    function generateUniqueID() {
+      const timestamp = Date.now().toString();
+      const randomNum = Math.floor(Math.random() * 10000)
+        .toString()
+        .padStart(4, "0");
+      return `${timestamp}-${randomNum}`;
+    }
 
-  // Why are we using XMLHttpRequest? See:
-  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-  const blob = await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      resolve(xhr.response);
-    };
-    xhr.onerror = function (e) {
-      console.log(e);
-      reject(new TypeError("Network request failed"));
-    };
-    xhr.responseType = "blob";
-    xhr.open("GET", uri, true);
-    xhr.send(null);
-  });
+    // Why are we using XMLHttpRequest? See:
+    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
 
-  const fileRef = ref(storage, generateUniqueID());
-  const result = await uploadBytes(fileRef, blob);
+    const fileRef = ref(storage, generateUniqueID());
+    const result = await uploadBytes(fileRef, blob);
 
-  // We're done with the blob, close and release it
-  blob.close();
+    // We're done with the blob, close and release it
+    blob.close();
 
-  return await getDownloadURL(fileRef);
+    return await getDownloadURL(fileRef);
+  };
+
+  return (
+    <ScrollView>
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        {!!image && (
+          <Text
+            style={{
+              fontSize: 20,
+              marginBottom: 20,
+              textAlign: "center",
+              marginHorizontal: 15,
+            }}
+          >
+            Are you happy with this image? Note: you can change this later.
+          </Text>
+        )}
+        <Text variant="displayMedium">Create a new coupon book</Text>
+        <Text variant="titleMedium">Choose a name for your coupon book</Text>
+        <TextInput
+          label="Coupon Book Name"
+          value={couponBookName}
+          onChangeText={handleSetCouponBookName}
+        ></TextInput>
+        <Text variant="titleMedium">
+          Choose a photo to be your coupon book cover
+        </Text>
+
+        <Button mode="outlined" onPress={pickImage}>
+          Camera
+        </Button>
+
+        <Button mode="outlined" onPress={takePhoto}>
+          Take Photo
+        </Button>
+
+        {maybeRenderImage()}
+        {renderUploadingOverlay()}
+
+        <Text variant="titleMedium">If you're happy press create below.</Text>
+        <Button mode="outlined" onPress={handleCreateNewCouponBook}>
+          Create
+        </Button>
+
+        <StatusBar barStyle="default" />
+      </View>
+    </ScrollView>
+  );
 }
