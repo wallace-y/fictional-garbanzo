@@ -157,6 +157,11 @@ export default function CouponCreator({ navigation }) {
     try {
       addNewCouponBook(couponBookName, image).then((res) => {
         alert("Coupon book created with id: " + res);
+        navigation.navigate("CouponBookEditor",{
+          title: couponBookName,
+          image: image,
+          coupon_book_id: res
+        })
       });
     } catch (err) {
       console.log(err);
