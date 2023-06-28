@@ -1,6 +1,12 @@
 import { KeyboardAvoidingView, View, StyleSheet } from "react-native";
 import React, { useState } from "react";
-import { TextInput, ActivityIndicator, Button, Text } from "react-native-paper";
+import {
+  TextInput,
+  ActivityIndicator,
+  Button,
+  Text,
+  Avatar,
+} from "react-native-paper";
 import { auth } from "../firebaseConfig.js";
 import {
   signInWithEmailAndPassword,
@@ -41,7 +47,11 @@ const LoginScreen = () => {
   };
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Text variant="displayLarge">Tender Tokens.</Text>
+      <View style={styles.header}>
+        <Text variant="displayLarge">Tokens of Love</Text>
+        <Avatar.Icon size={78} icon="hand-heart" />
+      </View>
+
       <TextInput
         label="Email"
         value={email}
@@ -65,7 +75,9 @@ const LoginScreen = () => {
           <Button mode="contained-tonal" onPress={signUp} style={styles.button}>
             Register
           </Button>
-          <Text variant="bodySmall" style={styles.forgotPw}>Forgot password?</Text>
+          <Text variant="bodySmall" style={styles.forgotPw}>
+            Forgot password?
+          </Text>
         </View>
       )}
     </KeyboardAvoidingView>
@@ -80,6 +92,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 16,
   },
+  header: {
+    alignItems: "center",
+    marginBottom: 30,
+  },
   buttonGroup: {
     marginTop: 16,
   },
@@ -87,6 +103,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   forgotPw: {
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
