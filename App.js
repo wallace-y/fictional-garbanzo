@@ -8,6 +8,7 @@ import CouponBookList from "./components/CouponBookList.jsx";
 import IndividualCouponBook from "./components/IndividualCouponBook.jsx"
 import LoginScreen from "./components/LoginScreen.jsx";
 import CouponCreator from "./components/CouponCreator.jsx";
+import CouponBookEditor from "./components/CouponBookEditor";
 import { auth } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
@@ -83,6 +84,21 @@ export default function App() {
     </Stack.Navigator>
   );
 
+  const CouponCreatorScreen = () => (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="CouponCreator"
+        component={CouponCreator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CouponBookEditor"
+        component={CouponBookEditor}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+
   return (
     <NavigationContainer>
       <PaperProvider>
@@ -95,7 +111,7 @@ export default function App() {
             />
             <Tab.Screen
               name="Create"
-              component={CouponCreator}
+              component={CouponCreatorScreen}
               options={createCouponStackOptions}
             />
             <Tab.Screen
