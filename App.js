@@ -5,7 +5,7 @@ import { PaperProvider } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import LandingPage from "./components/LandingPage.jsx";
 import CouponBookList from "./components/CouponBookList.jsx";
-import IndividualCouponBook from "./components/IndividualCouponBook.jsx"
+import IndividualCouponBook from "./components/IndividualCouponBook.jsx";
 import LoginScreen from "./components/LoginScreen.jsx";
 import CouponCreator from "./components/CouponCreator.jsx";
 import CouponBookEditor from "./components/CouponBookEditor";
@@ -79,6 +79,11 @@ export default function App() {
       <Stack.Screen
         name="IndividualCouponBook"
         component={IndividualCouponBook}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CouponBookEditor"
+        component={CouponBookEditor}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
