@@ -1,22 +1,14 @@
 import { KeyboardAvoidingView, View, StyleSheet } from "react-native";
 import React, { useState } from "react";
-import {
-  TextInput,
-  ActivityIndicator,
-  Button,
-  Text,
-  Avatar,
-} from "react-native-paper";
+import { TextInput, ActivityIndicator, Button, Text, Avatar, useTheme } from "react-native-paper";
 import { auth } from "../firebaseConfig.js";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const theme = useTheme();
 
   const signIn = async () => {
     setLoading(true);
@@ -33,11 +25,7 @@ const LoginScreen = () => {
   const signUp = async () => {
     setLoading(true);
     try {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const response = await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.log(error);
       alert("Registration failed: " + error.message);
@@ -45,10 +33,13 @@ const LoginScreen = () => {
       setLoading(false);
     }
   };
+
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <View style={styles.header}>
-        <Text variant="displayLarge">Tokens of Love</Text>
+      <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
+        <Text style={styles.heading} variant="displayLarge">
+          Care Coupons
+        </Text>
         <Avatar.Icon size={78} icon="hand-heart" />
       </View>
 
@@ -66,13 +57,13 @@ const LoginScreen = () => {
         onChangeText={(text) => setPassword(text)}
       />
       {loading ? (
-        <ActivityIndicator animating={true} size={"large"} color="#0000ff" />
+        <ActivityIndicator animating={true} size="large" color="#0000ff" />
       ) : (
         <View style={styles.buttonGroup}>
           <Button mode="contained" onPress={signIn} style={styles.button}>
             Login
           </Button>
-          <Button mode="contained-tonal" onPress={signUp} style={styles.button}>
+          <Button mode="contained" onPress={signUp} style={styles.button}>
             Register
           </Button>
           <Text variant="bodySmall" style={styles.forgotPw}>
@@ -95,6 +86,16 @@ const styles = StyleSheet.create({
   header: {
     alignItems: "center",
     marginBottom: 30,
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderWidth: 5,
+    borderRadius: 8,
+  },
+  heading: {
+    marginBottom: 16,
+    textAlign: "center",
+    fontSize: 28,
+    fontWeight: "bold",
   },
   buttonGroup: {
     marginTop: 16,

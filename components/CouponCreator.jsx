@@ -12,7 +12,7 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import { Button, TextInput, Text } from "react-native-paper";
+import { Button, TextInput, Text,useTheme } from "react-native-paper";
 import * as Clipboard from "expo-clipboard";
 import { app, db } from "../firebaseConfig.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -26,7 +26,48 @@ if (!getApps().length) {
 // Firebase sets some timeers for a long period, which will trigger some warnings. Let's turn that off for this example
 LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
+
+
+
 export default function CouponCreator({ navigation }) {
+  const theme = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      backgroundColor: theme.colors.background,
+      paddingHorizontal: 20,
+    },
+    imageText: {
+      fontSize: 20,
+      marginBottom: 20,
+      textAlign: "center",
+      marginHorizontal: 15,
+      color: theme.colors.text,
+    },
+    title: {
+      fontSize: 24,
+      color: theme.colors.text,
+      marginBottom: 10,
+    },
+    subtitle: {
+      fontSize: 20,
+      color: theme.colors.text,
+      marginBottom: 10,
+    },
+    input: {
+      backgroundColor: theme.colors.surface,
+    },
+    button: {
+      marginVertical: 10,
+    },
+    createText: {
+      fontSize: 20,
+      color: theme.colors.text,
+    },
+  });
+
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [couponBookName, setCouponBookName] = useState(null);
@@ -205,49 +246,66 @@ export default function CouponCreator({ navigation }) {
   };
 
   return (
-    <ScrollView>
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        {!!image && (
-          <Text
-            style={{
-              fontSize: 20,
-              marginBottom: 20,
-              textAlign: "center",
-              marginHorizontal: 15,
-            }}
-          >
-            Are you happy with this image? Note: you can change this later.
-          </Text>
-        )}
-        <Text variant="displayMedium">Create a new coupon book</Text>
-        <Text variant="titleMedium">Choose a name for your coupon book</Text>
-        <TextInput
-          label="Coupon Book Name"
-          value={couponBookName}
-          onChangeText={handleSetCouponBookName}
-        ></TextInput>
-        <Text variant="titleMedium">
-          Choose a photo to be your coupon book cover
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <View style={styles.container}>
+      {/* {!!image && (
+        <Text style={styles.imageText}>
+          Are you happy with this image? Note: you can change this later.
         </Text>
+      )} */}
+      <Text style={styles.title}>Create a new coupon book</Text>
+      <Text style={styles.subtitle}>
+        Choose a name for your coupon book
+      </Text>
+      <TextInput
+        label="Coupon Book Name"
+        value={couponBookName}
+        onChangeText={handleSetCouponBookName}
+        style={[styles.input, { mode: "outlined" }]}
+        dense
+      />
+      <Text style={styles.subtitle}>
+        Choose a photo to be your coupon book cover
+      </Text>
 
-        <Button mode="outlined" onPress={pickImage}>
-          Camera
-        </Button>
+      <Button
+        mode="outlined"
+        onPress={pickImage}
+        style={styles.button}
+        labelStyle={{ fontSize: 16 }}
+      >
+        Camera
+      </Button>
 
-        <Button mode="outlined" onPress={takePhoto}>
-          Take Photo
-        </Button>
+      <Button
+        mode="outlined"
+        onPress={takePhoto}
+        style={styles.button}
+        labelStyle={{ fontSize: 16 }}
+      >
+        Take Photo
+      </Button>
 
-        {maybeRenderImage()}
-        {renderUploadingOverlay()}
+      {maybeRenderImage()}
+      {renderUploadingOverlay()}
 
-        <Text variant="titleMedium">If you're happy press create below.</Text>
-        <Button mode="outlined" onPress={handleCreateNewCouponBook}>
-          Create
-        </Button>
+      <Text style={styles.createText}>
+        If you're happy, press create below.
+      </Text>
+      <Button
+        mode="outlined"
+        onPress={handleCreateNewCouponBook}
+        style={styles.button}
+        labelStyle={{ fontSize: 18 }}
+      >
+        Create
+      </Button>
 
-        <StatusBar barStyle="default" />
-      </View>
-    </ScrollView>
+      <StatusBar barStyle="default" />
+    </View>
+  </ScrollView>
   );
+  
 }
+
+

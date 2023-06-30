@@ -15,6 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import theme from "./styling/theme";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -106,7 +107,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <PaperProvider>
+      <PaperProvider theme={theme}>
         {authenticated ? (
           <Tab.Navigator screenOptions={tabBarOptions}>
             <Tab.Screen
