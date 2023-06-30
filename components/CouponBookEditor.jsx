@@ -11,11 +11,11 @@ import {
   IconButton,
 } from "react-native-paper";
 import { getIndividualCouponBook } from "../utils/fetchIndividualCouponBook";
+import { addNewCouponToCouponBook } from "../utils/addNewCouponToCouponBook";
 import IconSelectionList from "./IconSelectionList";
 
 export default function IndividualCouponBook({ route, navigation }) {
-  const { coupon_book_id, image, sender_name, title } =
-    route.params;
+  const { coupon_book_id, image, sender_name, title } = route.params;
 
   const [allCoupons, setAllCoupons] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,6 @@ export default function IndividualCouponBook({ route, navigation }) {
   const [newCouponTitle, setNewCouponTitle] = useState("");
   const [newCouponContent, setNewCouponContent] = useState("");
   const [selectedIcon, setSelectedIcon] = useState(null);
-
 
   useEffect(() => {
     try {
@@ -49,13 +48,27 @@ export default function IndividualCouponBook({ route, navigation }) {
   const handleSubmitCoupon = () => {
     try {
       setAddingCoupon(false);
+      addNewCouponToCouponBook(
+        newCouponTitle,
+        newCouponContent,
+        selectedIcon,
+        coupon_book_id
+      );
+      setAllCoupons((prevList) => [
+        ...prevList,
+        {
+          title: newCouponTitle,
+          content: newCouponContent,
+          icon: selectedIcon,
+        },
+      ]);
     } catch (err) {
       console.log(err);
     }
   };
 
   const onSelectIcon = (iconName) => {
-    setSelectedIcon(iconName)
+    setSelectedIcon(iconName);
   };
 
   return (
@@ -95,7 +108,7 @@ export default function IndividualCouponBook({ route, navigation }) {
                 multiline={true}
                 numberOfLines={4}
               />
-              <IconSelectionList onSelectIcon={onSelectIcon}/>
+              <IconSelectionList onSelectIcon={onSelectIcon} />
               <Button onPress={handleSubmitCoupon}>Create New Coupon</Button>
             </View>
           ) : null}
@@ -111,7 +124,7 @@ export default function IndividualCouponBook({ route, navigation }) {
                     key={index}
                     title={coupon.title}
                     description={coupon.content}
-                    left={() => <List.Icon icon="account-cowboy-hat" />}
+                    left={() => <List.Icon icon={coupon.icon} />}
                   />
                 );
               })}
