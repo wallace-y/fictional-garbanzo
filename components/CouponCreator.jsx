@@ -12,7 +12,7 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import { Button, TextInput, Text,useTheme } from "react-native-paper";
+import { Button, TextInput, Text, useTheme } from "react-native-paper";
 import * as Clipboard from "expo-clipboard";
 import { app, db } from "../firebaseConfig.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -25,9 +25,6 @@ if (!getApps().length) {
 
 // Firebase sets some timeers for a long period, which will trigger some warnings. Let's turn that off for this example
 LogBox.ignoreLogs([`Setting a timer for a long period`]);
-
-
-
 
 export default function CouponCreator({ navigation }) {
   const theme = useTheme();
@@ -71,6 +68,8 @@ export default function CouponCreator({ navigation }) {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [couponBookName, setCouponBookName] = useState(null);
+  const [couponBookRecipient, setCouponBookRecipient] = useState(null);
+
 
   useEffect(() => {
     if (Platform.OS !== "web") {
@@ -135,13 +134,13 @@ export default function CouponCreator({ navigation }) {
         >
           <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
         </View>
-        <Text
+        {/* <Text
           onPress={copyToClipboard}
           onLongPress={share}
           style={{ paddingVertical: 10, paddingHorizontal: 10 }}
         >
           {image}
-        </Text>
+        </Text> */}
       </View>
     );
   };
@@ -196,13 +195,14 @@ export default function CouponCreator({ navigation }) {
 
   const handleCreateNewCouponBook = () => {
     try {
-      addNewCouponBook(couponBookName, image).then((res) => {
+      addNewCouponBook(couponBookName, image,couponBookRecipient).then((res) => {
         alert("Coupon book created with id: " + res);
-        navigation.navigate("CouponBookEditor",{
+        navigation.navigate("CouponBookEditor", {
           title: couponBookName,
           image: image,
-          coupon_book_id: res
-        })
+          coupon_book_id: res,
+          couponBookRecipient
+        });
       });
     } catch (err) {
       console.log(err);
@@ -247,65 +247,67 @@ export default function CouponCreator({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-    <View style={styles.container}>
-      {/* {!!image && (
+      <View style={styles.container}>
+        {/* {!!image && (
         <Text style={styles.imageText}>
           Are you happy with this image? Note: you can change this later.
         </Text>
       )} */}
-      <Text style={styles.title}>Create a new coupon book</Text>
-      <Text style={styles.subtitle}>
-        Choose a name for your coupon book
-      </Text>
-      <TextInput
-        label="Coupon Book Name"
-        value={couponBookName}
-        onChangeText={handleSetCouponBookName}
-        style={[styles.input, { mode: "outlined" }]}
-        dense
-      />
-      <Text style={styles.subtitle}>
-        Choose a photo to be your coupon book cover
-      </Text>
+        <Text style={styles.title}>Create a new coupon book</Text>
+        <Text style={styles.subtitle}>Choose a name for your coupon book</Text>
+        <TextInput
+          label="Coupon Book Name"
+          value={couponBookName}
+          onChangeText={handleSetCouponBookName}
+          style={[styles.input, { mode: "outlined" }]}
+          dense
+        />
+        <TextInput
+          label="Recipient"
+          value={couponBookRecipient}
+          onChangeText={(text) => setCouponBookRecipient(text)}
+          style={[styles.input, { mode: "outlined" }]}
+          dense
+        />
+        <Text style={styles.subtitle}>
+          Choose a photo to be your coupon book cover
+        </Text>
 
-      <Button
-        mode="outlined"
-        onPress={pickImage}
-        style={styles.button}
-        labelStyle={{ fontSize: 16 }}
-      >
-        Camera
-      </Button>
+        <Button
+          mode="outlined"
+          onPress={pickImage}
+          style={styles.button}
+          labelStyle={{ fontSize: 16 }}
+        >
+          Camera
+        </Button>
 
-      <Button
-        mode="outlined"
-        onPress={takePhoto}
-        style={styles.button}
-        labelStyle={{ fontSize: 16 }}
-      >
-        Take Photo
-      </Button>
+        <Button
+          mode="outlined"
+          onPress={takePhoto}
+          style={styles.button}
+          labelStyle={{ fontSize: 16 }}
+        >
+          Take Photo
+        </Button>
 
-      {maybeRenderImage()}
-      {renderUploadingOverlay()}
+        {maybeRenderImage()}
+        {renderUploadingOverlay()}
 
-      <Text style={styles.createText}>
-        If you're happy, press create below.
-      </Text>
-      <Button
-        mode="outlined"
-        onPress={handleCreateNewCouponBook}
-        style={styles.button}
-        labelStyle={{ fontSize: 18 }}
-      >
-        Create
-      </Button>
+        <Text style={styles.createText}>
+          If you're happy, press create below.
+        </Text>
+        <Button
+          mode="outlined"
+          onPress={handleCreateNewCouponBook}
+          style={styles.button}
+          labelStyle={{ fontSize: 18 }}
+        >
+          Create
+        </Button>
 
-      <StatusBar barStyle="default" />
-    </View>
-  </ScrollView>
+        <StatusBar barStyle="default" />
+      </View>
+    </ScrollView>
   );
-  
 }
-
-
