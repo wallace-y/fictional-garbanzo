@@ -2,7 +2,7 @@
   "expo": {
     "name": "digital-coupon-book",
     "slug": "digital-coupon-book",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -22,7 +22,8 @@
         "foregroundImage": "./assets/charity-donation-hand-love-icon.png",
         "backgroundColor": "#9381ff"
       },
-      "package": "com.wallacey.digitalcouponbook"
+      "package": "com.wallacey.digitalcouponbook",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
