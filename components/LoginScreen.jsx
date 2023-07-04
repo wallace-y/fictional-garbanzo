@@ -65,6 +65,7 @@ const LoginScreen = () => {
         value={email}
         onChangeText={(text) => setEmail(text)}
         mode="outlined"
+        autoCapitalize="none"
       />
       <TextInput
         mode="outlined"
@@ -72,6 +73,7 @@ const LoginScreen = () => {
         secureTextEntry={true}
         value={password}
         onChangeText={(text) => setPassword(text)}
+        autoCapitalize="none"
       />
       {loading ? (
         <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
