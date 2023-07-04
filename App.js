@@ -9,6 +9,7 @@ import IndividualCouponBook from "./components/IndividualCouponBook.jsx";
 import LoginScreen from "./components/LoginScreen.jsx";
 import CouponCreator from "./components/CouponCreator.jsx";
 import CouponBookEditor from "./components/CouponBookEditor";
+import Profile from "./components/Profile";
 import { auth } from "./firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
@@ -34,8 +35,8 @@ export default function App() {
   }, []);
 
   const tabBarOptions = {
-    activeTintColor: "#6200ee",
-    inactiveTintColor: "gray",
+    tabBarActiveTintColor: theme.colors.primary,
+    tabBarInactiveTintColor: theme.colors.text,
     labelStyle: { fontSize: 16, fontWeight: "bold" },
   };
 
@@ -57,6 +58,13 @@ export default function App() {
     headerShown: false,
     tabBarIcon: ({ focused, color, size }) => {
       return <Ionicons name="book-outline" size={size} color={color} />;
+    },
+  };
+
+  const profileStackOptions = {
+    headerShown: false,
+    tabBarIcon: ({ focused, color, size }) => {
+      return <Ionicons name="person-circle-outline" size={size} color={color} />;
     },
   };
 
@@ -105,6 +113,16 @@ export default function App() {
     </Stack.Navigator>
   );
 
+  const ProfileStackScreen = () => (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+
   return (
     <NavigationContainer>
       <PaperProvider theme={theme}>
@@ -124,6 +142,11 @@ export default function App() {
               name="Read"
               component={CouponBookScreen}
               options={couponBookListStackOptions}
+            />
+            <Tab.Screen
+              name="Profile"
+              component={ProfileStackScreen}
+              options={profileStackOptions}
             />
           </Tab.Navigator>
         ) : (
