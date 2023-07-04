@@ -1,12 +1,14 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { View, StyleSheet, ScrollView,RefreshControl } from "react-native";
-import { List, Text, ActivityIndicator } from "react-native-paper";
+import { List, Text, ActivityIndicator,useTheme } from "react-native-paper";
 import { getAllCouponBooks } from "../utils/fetchCouponForMe";
 import { getAllMyCouponBooksForOthers } from "../utils/fetchCouponsForOthers.js";
 import CouponCard from "./CouponCard";
 
 export default function CouponBookList({ navigation }) {
+  const theme = useTheme();
+
   const [allOwnCoupons, setAllOwnCoupons] = useState([]);
   const [couponsForOthers, setCouponsForOthers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -45,7 +47,14 @@ export default function CouponBookList({ navigation }) {
       }
     >
       <View style={styles.container}>
-        <Text style={styles.heading} variant="titleLarge">
+      <View
+          style={[styles.header, { backgroundColor: theme.colors.primary }]}
+        >
+          <Text variant="headlineLarge" style={[{ color: theme.colors.text }]}>
+            All Coupons.
+          </Text>
+        </View>
+        <Text style={styles.heading} variant="titleMedium">
           Your Tokens FROM others.
         </Text>
         {loading ? (
@@ -78,7 +87,7 @@ export default function CouponBookList({ navigation }) {
             })}
           </List.AccordionGroup>
         )}
-        <Text style={styles.heading} variant="titleLarge">
+        <Text style={styles.heading} variant="titleMedium">
           Your Tokens FOR others.
         </Text>
         {loading ? (
@@ -91,6 +100,7 @@ export default function CouponBookList({ navigation }) {
                   title={coupon.title}
                   id={`coupon-${index}`}
                   key={index}
+                  
                 >
                   <CouponCard
                     title={coupon.title}
@@ -117,12 +127,21 @@ export default function CouponBookList({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: "center",
-    marginTop: "20%",
+    padding: 5,
   },
   heading: {
     marginTop: 16,
     marginBottom: 32,
     textAlign: "center",
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 30,
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderWidth: 5,
+    borderRadius: 8,
   },
 });

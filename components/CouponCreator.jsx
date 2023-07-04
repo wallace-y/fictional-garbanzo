@@ -12,7 +12,13 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import { Button, TextInput, Text, useTheme } from "react-native-paper";
+import {
+  Button,
+  TextInput,
+  Text,
+  useTheme,
+  IconButton,
+} from "react-native-paper";
 import * as Clipboard from "expo-clipboard";
 import { app, db } from "../firebaseConfig.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -29,47 +35,10 @@ LogBox.ignoreLogs([`Setting a timer for a long period`]);
 export default function CouponCreator({ navigation }) {
   const theme = useTheme();
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      backgroundColor: theme.colors.background,
-      paddingHorizontal: 20,
-    },
-    imageText: {
-      fontSize: 20,
-      marginBottom: 20,
-      textAlign: "center",
-      marginHorizontal: 15,
-      color: theme.colors.text,
-    },
-    title: {
-      fontSize: 24,
-      color: theme.colors.text,
-      marginBottom: 10,
-    },
-    subtitle: {
-      fontSize: 20,
-      color: theme.colors.text,
-      marginBottom: 10,
-    },
-    input: {
-      backgroundColor: theme.colors.surface,
-    },
-    button: {
-      marginVertical: 10,
-    },
-    createText: {
-      fontSize: 20,
-      color: theme.colors.text,
-    },
-  });
-
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [couponBookName, setCouponBookName] = useState(null);
   const [couponBookRecipient, setCouponBookRecipient] = useState(null);
-
 
   useEffect(() => {
     if (Platform.OS !== "web") {
@@ -101,7 +70,11 @@ export default function CouponCreator({ navigation }) {
             },
           ]}
         >
-          <ActivityIndicator color="#fff" animating size="large" />
+          <ActivityIndicator
+            color={theme.colors.primary}
+            animating
+            size="large"
+          />
         </View>
       );
     }
@@ -115,7 +88,6 @@ export default function CouponCreator({ navigation }) {
     return (
       <View
         style={{
-          marginTop: 30,
           width: 250,
           borderRadius: 3,
           elevation: 2,
@@ -195,17 +167,23 @@ export default function CouponCreator({ navigation }) {
 
   const handleCreateNewCouponBook = () => {
     try {
-      addNewCouponBook(couponBookName, image,couponBookRecipient).then((res) => {
-        alert("Coupon book created with id: " + res);
-        navigation.navigate("CouponBookEditor", {
-          title: couponBookName,
-          image: image,
-          coupon_book_id: res,
-          couponBookRecipient
-        });
-      });
+      addNewCouponBook(couponBookName, image, couponBookRecipient).then(
+        (res) => {
+          alert("Coupon book created with id: " + res);
+          navigation.navigate("CouponBookEditor", {
+            title: couponBookName,
+            image: image,
+            coupon_book_id: res,
+            couponBookRecipient,
+          });
+        }
+      );
     } catch (err) {
       console.log(err);
+    } finally {
+      setCouponBookName(null);
+      setCouponBookRecipient(null);
+      setImage(null);
     }
   };
 
@@ -253,61 +231,103 @@ export default function CouponCreator({ navigation }) {
           Are you happy with this image? Note: you can change this later.
         </Text>
       )} */}
-        <Text style={styles.title}>Create a new coupon book</Text>
-        <Text style={styles.subtitle}>Choose a name for your coupon book</Text>
+        <View
+          style={[styles.header, { backgroundColor: theme.colors.primary }]}
+        >
+          <Text variant="headlineLarge" style={[{ color: theme.colors.text }]}>
+            Create a new coupon book
+          </Text>
+        </View>
+
         <TextInput
           label="Coupon Book Name"
           value={couponBookName}
           onChangeText={handleSetCouponBookName}
           style={[styles.input, { mode: "outlined" }]}
-          dense
         />
         <TextInput
           label="Recipient"
           value={couponBookRecipient}
           onChangeText={(text) => setCouponBookRecipient(text)}
           style={[styles.input, { mode: "outlined" }]}
-          dense
         />
-        <Text style={styles.subtitle}>
-          Choose a photo to be your coupon book cover
-        </Text>
+        <View style={styles.buttonContainer}>
+          <Text variant="bodyMedium">Cover photo:</Text>
+          <IconButton
+            icon="dots-grid"
+            mode="contained"
+            onPress={pickImage}
+            style={styles.button}
+            labelStyle={{ fontSize: 16 }}
+          >
+            Camera
+          </IconButton>
 
-        <Button
-          mode="outlined"
-          onPress={pickImage}
-          style={styles.button}
-          labelStyle={{ fontSize: 16 }}
-        >
-          Camera
-        </Button>
+          <IconButton
+            icon="camera"
+            mode="contained"
+            onPress={takePhoto}
+            style={styles.button}
+            labelStyle={{ fontSize: 16 }}
+          >
+            Take Photo
+          </IconButton>
+        </View>
 
-        <Button
-          mode="outlined"
-          onPress={takePhoto}
-          style={styles.button}
-          labelStyle={{ fontSize: 16 }}
-        >
-          Take Photo
-        </Button>
+        <View style={styles.imageContainer}>
+          {maybeRenderImage()}
+          {renderUploadingOverlay()}
+        </View>
 
-        {maybeRenderImage()}
-        {renderUploadingOverlay()}
-
-        <Text style={styles.createText}>
-          If you're happy, press create below.
-        </Text>
-        <Button
-          mode="outlined"
-          onPress={handleCreateNewCouponBook}
-          style={styles.button}
-          labelStyle={{ fontSize: 18 }}
-        >
-          Create
-        </Button>
+        {image !== null &&
+        couponBookName !== null &&
+        couponBookRecipient !== null ? (
+          <View>
+            <Button mode="contained" onPress={handleCreateNewCouponBook}>
+              Create
+            </Button>
+          </View>
+        ) : (
+          <View>
+            <Button mode="contained" disabled={true}>
+              Create
+            </Button>
+          </View>
+        )}
 
         <StatusBar barStyle="default" />
       </View>
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 5,
+  },
+  header: {
+    marginBottom: 15,
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderWidth: 5,
+    borderRadius: 8,
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  imageText: {
+    fontSize: 20,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  buttonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+});
