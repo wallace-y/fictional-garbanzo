@@ -1,8 +1,18 @@
 import { KeyboardAvoidingView, View, StyleSheet } from "react-native";
 import React, { useState } from "react";
-import { TextInput, ActivityIndicator, Button, Text, Avatar, useTheme } from "react-native-paper";
+import {
+  TextInput,
+  ActivityIndicator,
+  Button,
+  Text,
+  Avatar,
+  useTheme,
+} from "react-native-paper";
 import { auth } from "../firebaseConfig.js";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -25,7 +35,11 @@ const LoginScreen = () => {
   const signUp = async () => {
     setLoading(true);
     try {
-      const response = await createUserWithEmailAndPassword(auth, email, password);
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
     } catch (error) {
       console.log(error);
       alert("Registration failed: " + error.message);
@@ -35,11 +49,14 @@ const LoginScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
-        <Text style={styles.heading} variant="displayLarge">
-          Care Coupons
-        </Text>
+    <KeyboardAvoidingView
+      behavior="padding"
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
+      <View style={[styles.header,{backgroundColor: theme.colors.primary}]}>
+        <Text variant="displayMedium" style={[{color: theme.colors.text}]}>Care Coupons</Text>
+      </View>
+      <View style={styles.logoContainer}>
         <Avatar.Icon size={78} icon="hand-heart" />
       </View>
 
@@ -57,7 +74,7 @@ const LoginScreen = () => {
         onChangeText={(text) => setPassword(text)}
       />
       {loading ? (
-        <ActivityIndicator animating={true} size="large" color="#0000ff" />
+        <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
       ) : (
         <View style={styles.buttonGroup}>
           <Button mode="contained" onPress={signIn} style={styles.button}>
@@ -81,7 +98,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 16,
+    padding: 5,
+  },
+  logoContainer: {
+    alignItems: "center",
+    marginBottom: 15,
   },
   header: {
     alignItems: "center",
