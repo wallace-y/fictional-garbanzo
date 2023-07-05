@@ -112,6 +112,7 @@ export default function CouponBookList({ navigation }) {
                         coupon_book_id: coupon.coupon_book_id,
                         sender_name: coupon.sender_name,
                         image: coupon.image,
+                        recipient: coupon.recipient
                       })
                     }
                   />

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, Image } from "react-native";
+import { View, StyleSheet, ScrollView, Image, Share } from "react-native";
 import {
   List,
   Text,
@@ -15,7 +15,7 @@ import { addNewCouponToCouponBook } from "../utils/addNewCouponToCouponBook";
 import IconSelectionList from "./IconSelectionList";
 
 export default function IndividualCouponBook({ route, navigation }) {
-  const { coupon_book_id, image, sender_name, title } = route.params;
+  const { coupon_book_id, image, sender_name, title, recipient } = route.params;
 
   const [allCoupons, setAllCoupons] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -71,14 +71,38 @@ export default function IndividualCouponBook({ route, navigation }) {
     setSelectedIcon(iconName);
   };
 
+  const shareCouponBook = () => {
+    const shareOptions = {
+      message: `${sender_name} has sent you a digital coupon book!
+      
+      To claim this coupon book:
+      1. Download the Digital Coupon Book app from the Google Play Store [Link TBC]
+      2. Register for an account and sign in
+      3. Click the claim button on the home page and enter the following code:
+      *${coupon_book_id}*
+      
+      Enjoy!`    };
+
+    Share.share(shareOptions)
+      .then((result) => console.log(result))
+      .catch((error) => console.log(error));
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.heading} variant="displaySmall">
-            {title}
-          </Text>
-          <Button onPress={() => navigation.goBack()}>Go Back</Button>
+          <View>
+            <Text variant="displaySmall">{title}</Text>
+          </View>
+          <View style={styles.headerDetails}>
+            <View style={styles.recipient}>
+              <Text variant="bodyLarge">For {recipient}</Text>
+            </View>
+            <Button mode="elevated" onPress={() => navigation.goBack()}>
+              Go Back
+            </Button>
+          </View>
         </View>
         <View style={styles.imageContainer}>
           <Image source={{ uri: image }} style={styles.cover} />
@@ -88,6 +112,13 @@ export default function IndividualCouponBook({ route, navigation }) {
               size={64}
               source={{ uri: "https://picsum.photos/100" }}
             />
+            <Button
+              icon="share-variant"
+              mode="elevated"
+              onPress={shareCouponBook}
+            >
+              Share{" "}
+            </Button>
           </View>
         </View>
         <View>
@@ -144,15 +175,16 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    alignItems: "center",
     marginBottom: 16,
   },
-  heading: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 8,
+  headerDetails: {
+    marginTop: 8,
+    alignItems: "center",
+  },
+  recipient: {
+    marginBottom: 15,
   },
   imageContainer: {
     marginBottom: 16,
