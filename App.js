@@ -144,7 +144,7 @@ export default function App() {
               options={couponBookListStackOptions}
             />
             <Tab.Screen
-              name="Profile"
+              name="Account"
               component={ProfileStackScreen}
               options={profileStackOptions}
             />
