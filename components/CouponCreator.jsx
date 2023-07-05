@@ -39,6 +39,7 @@ export default function CouponCreator({ navigation }) {
   const [uploading, setUploading] = useState(false);
   const [couponBookName, setCouponBookName] = useState(null);
   const [couponBookRecipient, setCouponBookRecipient] = useState(null);
+  const [couponBookSender, setCouponBookSender] = useState(null);
 
   useEffect(() => {
     if (Platform.OS !== "web") {
@@ -167,23 +168,28 @@ export default function CouponCreator({ navigation }) {
 
   const handleCreateNewCouponBook = () => {
     try {
-      addNewCouponBook(couponBookName, image, couponBookRecipient).then(
-        (res) => {
-          alert("Coupon book created with id: " + res);
-          navigation.navigate("CouponBookEditor", {
-            title: couponBookName,
-            image: image,
-            coupon_book_id: res,
-            couponBookRecipient,
-          });
-        }
-      );
+      addNewCouponBook(
+        couponBookName,
+        image,
+        couponBookRecipient,
+        couponBookSender
+      ).then((res) => {
+        alert("Coupon book created with id: " + res);
+        navigation.navigate("CouponBookEditor", {
+          title: couponBookName,
+          image: image,
+          coupon_book_id: res,
+          recipient: couponBookRecipient,
+          sender_name: couponBookSender,
+        });
+      });
     } catch (err) {
       console.log(err);
     } finally {
       setCouponBookName(null);
       setCouponBookRecipient(null);
       setImage(null);
+      setCouponBookSender(null);
     }
   };
 
@@ -251,6 +257,12 @@ export default function CouponCreator({ navigation }) {
           onChangeText={(text) => setCouponBookRecipient(text)}
           style={[styles.input, { mode: "outlined" }]}
         />
+        <TextInput
+          label="Sent by"
+          value={couponBookSender}
+          onChangeText={(text) => setCouponBookSender(text)}
+          style={[styles.input, { mode: "outlined" }]}
+        />
         <View style={styles.buttonContainer}>
           <Text variant="bodyMedium">Cover photo:</Text>
           <IconButton
@@ -281,7 +293,8 @@ export default function CouponCreator({ navigation }) {
 
         {image !== null &&
         couponBookName !== null &&
-        couponBookRecipient !== null ? (
+        couponBookRecipient !== null &&
+        couponBookSender !== null ? (
           <View>
             <Button mode="contained" onPress={handleCreateNewCouponBook}>
               Create
