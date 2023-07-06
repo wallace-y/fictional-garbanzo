@@ -1,6 +1,6 @@
-import * as ImagePicker from "expo-image-picker";
-import { getApps, initializeApp } from "firebase/app";
-import React, { useEffect, useState } from "react";
+import * as ImagePicker from 'expo-image-picker';
+import { getApps, initializeApp } from 'firebase/app';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -11,18 +11,18 @@ import {
   LogBox,
   ScrollView,
   Platform,
-} from "react-native";
+} from 'react-native';
 import {
   Button,
   TextInput,
   Text,
   useTheme,
   IconButton,
-} from "react-native-paper";
-import * as Clipboard from "expo-clipboard";
-import { app, db } from "../firebaseConfig.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { addNewCouponBook } from "../utils/addNewCouponBook.js";
+} from 'react-native-paper';
+import * as Clipboard from 'expo-clipboard';
+import { app, db } from '../firebaseConfig.js';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { addNewCouponBook } from '../utils/addNewCouponBook.js';
 
 //avoid reinitalizing every refresh
 if (!getApps().length) {
@@ -42,15 +42,15 @@ export default function CouponCreator({ navigation }) {
   const [couponBookSender, setCouponBookSender] = useState(null);
 
   useEffect(() => {
-    if (Platform.OS !== "web") {
+    if (Platform.OS !== 'web') {
       requestMediaLibraryPermissions();
     }
   }, []);
 
   const requestMediaLibraryPermissions = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions to make this work!");
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!');
     }
   };
 
@@ -65,9 +65,9 @@ export default function CouponCreator({ navigation }) {
           style={[
             StyleSheet.absoluteFill,
             {
-              backgroundColor: "rgba(0,0,0,0.4)",
-              alignItems: "center",
-              justifyContent: "center",
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              alignItems: 'center',
+              justifyContent: 'center',
             },
           ]}
         >
@@ -98,11 +98,11 @@ export default function CouponCreator({ navigation }) {
           style={{
             borderTopRightRadius: 3,
             borderTopLeftRadius: 3,
-            shadowColor: "rgba(0,0,0,1)",
+            shadowColor: 'rgba(0,0,0,1)',
             shadowOpacity: 0.2,
             shadowOffset: { width: 4, height: 4 },
             shadowRadius: 5,
-            overflow: "hidden",
+            overflow: 'hidden',
           }}
         >
           <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
@@ -121,14 +121,14 @@ export default function CouponCreator({ navigation }) {
   const share = () => {
     Share.share({
       message: image,
-      title: "Check out this photo",
+      title: 'Check out this photo',
       url: image,
     });
   };
 
   const copyToClipboard = () => {
     Clipboard.setString(image);
-    alert("Copied image URL to clipboard");
+    alert('Copied image URL to clipboard');
   };
 
   const takePhoto = async () => {
@@ -157,10 +157,10 @@ export default function CouponCreator({ navigation }) {
         setImage(uploadUrl);
       }
     } catch (e) {
-      console.log("Upload error", e.message);
-      console.log("Upload error", e.stack);
+      console.log('Upload error', e.message);
+      console.log('Upload error', e.stack);
 
-      alert("Upload failed, sorry :(");
+      alert('Upload failed, sorry :(');
     } finally {
       setUploading(false);
     }
@@ -172,10 +172,10 @@ export default function CouponCreator({ navigation }) {
         couponBookName,
         image,
         couponBookRecipient,
-        couponBookSender
+        couponBookSender,
       ).then((res) => {
-        alert("Coupon book created with id: " + res);
-        navigation.navigate("CouponBookEditor", {
+        alert('Coupon book created with id: ' + res);
+        navigation.navigate('CouponBookEditor', {
           title: couponBookName,
           image: image,
           coupon_book_id: res,
@@ -200,7 +200,7 @@ export default function CouponCreator({ navigation }) {
       const timestamp = Date.now().toString();
       const randomNum = Math.floor(Math.random() * 10000)
         .toString()
-        .padStart(4, "0");
+        .padStart(4, '0');
       return `${timestamp}-${randomNum}`;
     }
 
@@ -213,10 +213,10 @@ export default function CouponCreator({ navigation }) {
       };
       xhr.onerror = function (e) {
         console.log(e);
-        reject(new TypeError("Network request failed"));
+        reject(new TypeError('Network request failed'));
       };
-      xhr.responseType = "blob";
-      xhr.open("GET", uri, true);
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
       xhr.send(null);
     });
 
@@ -249,19 +249,19 @@ export default function CouponCreator({ navigation }) {
           label="Coupon Book Name"
           value={couponBookName}
           onChangeText={handleSetCouponBookName}
-          style={[styles.input, { mode: "outlined" }]}
+          style={[styles.input, { mode: 'outlined' }]}
         />
         <TextInput
           label="Recipient"
           value={couponBookRecipient}
           onChangeText={(text) => setCouponBookRecipient(text)}
-          style={[styles.input, { mode: "outlined" }]}
+          style={[styles.input, { mode: 'outlined' }]}
         />
         <TextInput
           label="Sent by"
           value={couponBookSender}
           onChangeText={(text) => setCouponBookSender(text)}
-          style={[styles.input, { mode: "outlined" }]}
+          style={[styles.input, { mode: 'outlined' }]}
         />
         <View style={styles.buttonContainer}>
           <Text variant="bodyMedium">Cover photo:</Text>
@@ -317,11 +317,11 @@ export default function CouponCreator({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 5,
   },
   header: {
-    marginTop: "10%",
+    marginTop: '10%',
 
     marginBottom: 15,
     paddingVertical: 16,
@@ -331,18 +331,18 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 15,
   },
   imageText: {
     fontSize: 20,
     marginBottom: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   buttonContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });

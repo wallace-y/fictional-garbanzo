@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Text, IconButton, Avatar, useTheme, Button } from "react-native-paper";
-import { View, StyleSheet } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as React from 'react';
+import { Text, IconButton, Avatar, useTheme, Button } from 'react-native-paper';
+import { View, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LandingPage = ({ navigation }) => {
   const theme = useTheme();
@@ -39,10 +39,10 @@ const LandingPage = ({ navigation }) => {
       >
         <Text style={[{ color: theme.colors.accent }]}>Show</Text> you care.
       </Text>
-      <Button mode="contained" onPress={() => navigation.navigate("Create")}>
+      <Button mode="contained" onPress={() => navigation.navigate('Create')}>
         Get Started
       </Button>
-      <Button mode="elevated" onPress={() => navigation.navigate("Claim")}>
+      <Button mode="elevated" onPress={() => navigation.navigate('Claim')}>
         Claim a coupon book
       </Button>
     </View>
@@ -54,11 +54,11 @@ export default LandingPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 16,
   },
   logoContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 15,
   },
   header: {
@@ -70,11 +70,11 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginBottom: 24,
-    textAlign: "justify",
+    textAlign: 'justify',
   },
   headerContainer: {
-    width: "90%",
-    alignItems: "center",
+    width: '90%',
+    alignItems: 'center',
     borderWidth: 5,
     marginBottom: 15,
   },

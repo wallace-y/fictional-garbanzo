@@ -18,7 +18,7 @@ const BannerMessage = () => {
           onPress: () => setVisible(false),
         },
       ]}
-      icon={({size}) => (
+      icon={({ size }) => (
         <Image
           source={{
             uri: 'https://avatars3.githubusercontent.com/u/17571969?s=400&v=4',
@@ -28,7 +28,8 @@ const BannerMessage = () => {
             height: size,
           }}
         />
-      )}>
+      )}
+    >
       Welcome to your personal coupon book created by XXX.
     </Banner>
   );

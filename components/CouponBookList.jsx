@@ -1,10 +1,10 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView,RefreshControl } from "react-native";
-import { List, Text, ActivityIndicator,useTheme } from "react-native-paper";
-import { getAllCouponBooks } from "../utils/fetchCouponForMe";
-import { getAllMyCouponBooksForOthers } from "../utils/fetchCouponsForOthers.js";
-import CouponCard from "./CouponCard";
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import { List, Text, ActivityIndicator, useTheme } from 'react-native-paper';
+import { getAllCouponBooks } from '../utils/fetchCouponForMe';
+import { getAllMyCouponBooksForOthers } from '../utils/fetchCouponsForOthers.js';
+import CouponCard from './CouponCard';
 
 export default function CouponBookList({ navigation }) {
   const theme = useTheme();
@@ -47,7 +47,7 @@ export default function CouponBookList({ navigation }) {
       }
     >
       <View style={styles.container}>
-      <View
+        <View
           style={[styles.header, { backgroundColor: theme.colors.primary }]}
         >
           <Text variant="headlineLarge" style={[{ color: theme.colors.text }]}>
@@ -58,7 +58,7 @@ export default function CouponBookList({ navigation }) {
           Your Tokens FROM others.
         </Text>
         {loading ? (
-          <ActivityIndicator animating={true} size={"large"} color="#0000ff" />
+          <ActivityIndicator animating={true} size={'large'} color="#0000ff" />
         ) : (
           <List.AccordionGroup>
             {allOwnCoupons.map((coupon, index) => {
@@ -74,7 +74,7 @@ export default function CouponBookList({ navigation }) {
                     coupon_book_id={coupon.coupon_book_id}
                     sender_name={coupon.sender_name}
                     onOpen={() =>
-                      navigation.navigate("IndividualCouponBook", {
+                      navigation.navigate('IndividualCouponBook', {
                         title: coupon.title,
                         coupon_book_id: coupon.coupon_book_id,
                         sender_name: coupon.sender_name,
@@ -91,7 +91,7 @@ export default function CouponBookList({ navigation }) {
           Your Tokens FOR others.
         </Text>
         {loading ? (
-          <ActivityIndicator animating={true} size={"large"} color="#0000ff" />
+          <ActivityIndicator animating={true} size={'large'} color="#0000ff" />
         ) : (
           <List.AccordionGroup>
             {couponsForOthers.map((coupon, index) => {
@@ -100,19 +100,18 @@ export default function CouponBookList({ navigation }) {
                   title={coupon.title}
                   id={`coupon-${index}`}
                   key={index}
-                  
                 >
                   <CouponCard
                     title={coupon.title}
                     image={coupon.image}
                     coupon_book_id={coupon.coupon_book_id}
                     onOpen={() =>
-                      navigation.navigate("CouponBookEditor", {
+                      navigation.navigate('CouponBookEditor', {
                         title: coupon.title,
                         coupon_book_id: coupon.coupon_book_id,
                         sender_name: coupon.sender_name,
                         image: coupon.image,
-                        recipient: coupon.recipient
+                        recipient: coupon.recipient,
                       })
                     }
                   />
@@ -129,17 +128,17 @@ export default function CouponBookList({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 5,
   },
   heading: {
     marginTop: 16,
     marginBottom: 32,
-    textAlign: "center",
+    textAlign: 'center',
   },
   header: {
-    marginTop: "10%",
-    alignItems: "center",
+    marginTop: '10%',
+    alignItems: 'center',
     marginBottom: 30,
     paddingVertical: 16,
     paddingHorizontal: 32,
