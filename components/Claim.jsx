@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Text,
   IconButton,
@@ -6,11 +6,11 @@ import {
   useTheme,
   Button,
   TextInput,
-} from "react-native-paper";
-import { View, StyleSheet } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { claimCouponBook } from "../utils/claimCouponBook";
-import { useState } from "react";
+} from 'react-native-paper';
+import { View, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { claimCouponBook } from '../utils/claimCouponBook';
+import { useState } from 'react';
 
 const Claim = ({ navigation }) => {
   const theme = useTheme();
@@ -20,7 +20,7 @@ const Claim = ({ navigation }) => {
     try {
       claimCouponBook(couponCode, (success) => {
         if (success) {
-          navigation.navigate("CouponBookList");
+          navigation.navigate('CouponBookList');
           setCouponCode(null);
         }
       });
@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   header: {
-    marginTop: "10%",
-    alignItems: "center",
+    marginTop: '10%',
+    alignItems: 'center',
     marginBottom: 30,
     paddingVertical: 16,
     paddingHorizontal: 32,
@@ -76,6 +76,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   welcome: {
-    alignItems: "center",
+    alignItems: 'center',
   },
 });

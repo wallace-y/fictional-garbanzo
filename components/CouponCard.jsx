@@ -1,14 +1,9 @@
-import * as React from "react";
-import { Avatar, Button, Card, Text } from "react-native-paper";
+import * as React from 'react';
+import { Avatar, Button, Card, Text } from 'react-native-paper';
 
 // const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 
-
-
 const CouponCard = ({ title, subtitle, image, onOpen, content }) => (
-
-
-  
   <Card>
     <Card.Content>
       <Card.Title title={title} subtitle={subtitle} />

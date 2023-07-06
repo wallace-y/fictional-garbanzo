@@ -1,5 +1,5 @@
-import { KeyboardAvoidingView, View, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import { KeyboardAvoidingView, View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
 import {
   TextInput,
   ActivityIndicator,
@@ -7,16 +7,16 @@ import {
   Text,
   Avatar,
   useTheme,
-} from "react-native-paper";
-import { auth } from "../firebaseConfig.js";
+} from 'react-native-paper';
+import { auth } from '../firebaseConfig.js';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-} from "firebase/auth";
+} from 'firebase/auth';
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
 
@@ -26,7 +26,7 @@ const LoginScreen = () => {
       const response = await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.log(error);
-      alert("Sign in failed: " + error.message);
+      alert('Sign in failed: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -38,11 +38,11 @@ const LoginScreen = () => {
       const response = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
     } catch (error) {
       console.log(error);
-      alert("Registration failed: " + error.message);
+      alert('Registration failed: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -53,8 +53,10 @@ const LoginScreen = () => {
       behavior="padding"
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
-      <View style={[styles.header,{backgroundColor: theme.colors.primary}]}>
-        <Text variant="displayMedium" style={[{color: theme.colors.text}]}>Care Coupons</Text>
+      <View style={[styles.header, { backgroundColor: theme.colors.primary }]}>
+        <Text variant="displayMedium" style={[{ color: theme.colors.text }]}>
+          Care Coupons
+        </Text>
       </View>
       <View style={styles.logoContainer}>
         <Avatar.Icon size={78} icon="hand-heart" />
@@ -76,7 +78,11 @@ const LoginScreen = () => {
         autoCapitalize="none"
       />
       {loading ? (
-        <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
+        <ActivityIndicator
+          animating={true}
+          size="large"
+          color={theme.colors.primary}
+        />
       ) : (
         <View style={styles.buttonGroup}>
           <Button mode="contained" onPress={signIn} style={styles.button}>
@@ -99,15 +105,15 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 5,
   },
   logoContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 15,
   },
   header: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 30,
     paddingVertical: 16,
     paddingHorizontal: 32,
@@ -116,9 +122,9 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginBottom: 16,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 28,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   buttonGroup: {
     marginTop: 16,
@@ -127,6 +133,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   forgotPw: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

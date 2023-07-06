@@ -1,6 +1,6 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, Image, Share } from "react-native";
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, Image, Share } from 'react-native';
 import {
   List,
   Text,
@@ -9,10 +9,10 @@ import {
   Avatar,
   TextInput,
   IconButton,
-} from "react-native-paper";
-import { getIndividualCouponBook } from "../utils/fetchIndividualCouponBook";
-import { addNewCouponToCouponBook } from "../utils/addNewCouponToCouponBook";
-import IconSelectionList from "./IconSelectionList";
+} from 'react-native-paper';
+import { getIndividualCouponBook } from '../utils/fetchIndividualCouponBook';
+import { addNewCouponToCouponBook } from '../utils/addNewCouponToCouponBook';
+import IconSelectionList from './IconSelectionList';
 
 export default function IndividualCouponBook({ route, navigation }) {
   const { coupon_book_id, image, sender_name, title, recipient } = route.params;
@@ -20,8 +20,8 @@ export default function IndividualCouponBook({ route, navigation }) {
   const [allCoupons, setAllCoupons] = useState([]);
   const [loading, setLoading] = useState(false);
   const [addingCoupon, setAddingCoupon] = useState(false);
-  const [newCouponTitle, setNewCouponTitle] = useState("");
-  const [newCouponContent, setNewCouponContent] = useState("");
+  const [newCouponTitle, setNewCouponTitle] = useState('');
+  const [newCouponContent, setNewCouponContent] = useState('');
   const [selectedIcon, setSelectedIcon] = useState(null);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function IndividualCouponBook({ route, navigation }) {
         newCouponTitle,
         newCouponContent,
         selectedIcon,
-        coupon_book_id
+        coupon_book_id,
       );
       setAllCoupons((prevList) => [
         ...prevList,
@@ -81,7 +81,8 @@ export default function IndividualCouponBook({ route, navigation }) {
       3. Click the claim button on the home page and enter the following code:
       *${coupon_book_id}*
       
-      Enjoy!`    };
+      Enjoy!`,
+    };
 
     Share.share(shareOptions)
       .then((result) => console.log(result))
@@ -110,14 +111,14 @@ export default function IndividualCouponBook({ route, navigation }) {
             <Text style={styles.senderText}>Sent by: {sender_name}</Text>
             <Avatar.Image
               size={64}
-              source={{ uri: "https://picsum.photos/100" }}
+              source={{ uri: 'https://picsum.photos/100' }}
             />
             <Button
               icon="share-variant"
               mode="elevated"
               onPress={shareCouponBook}
             >
-              Share{" "}
+              Share{' '}
             </Button>
           </View>
         </View>
@@ -145,7 +146,7 @@ export default function IndividualCouponBook({ route, navigation }) {
           ) : null}
         </View>
         {loading ? (
-          <ActivityIndicator animating={true} size={"large"} color="#0000ff" />
+          <ActivityIndicator animating={true} size={'large'} color="#0000ff" />
         ) : (
           <ScrollView>
             <List.Section>
@@ -170,34 +171,34 @@ export default function IndividualCouponBook({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    marginTop: "20%",
+    justifyContent: 'center',
+    marginTop: '20%',
     padding: 16,
   },
   header: {
-    flexDirection: "column",
-    alignItems: "center",
+    flexDirection: 'column',
+    alignItems: 'center',
     marginBottom: 16,
   },
   headerDetails: {
     marginTop: 8,
-    alignItems: "center",
+    alignItems: 'center',
   },
   recipient: {
     marginBottom: 15,
   },
   imageContainer: {
     marginBottom: 16,
-    alignItems: "center",
+    alignItems: 'center',
   },
   cover: {
-    width: "100%",
+    width: '100%',
     height: 200,
     marginBottom: 8,
   },
   senderInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   senderText: {
     marginRight: 8,

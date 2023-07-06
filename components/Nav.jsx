@@ -1,7 +1,7 @@
-import * as React from "react";
-import { StyleSheet } from "react-native";
-import { Appbar, FAB, useTheme } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as React from 'react';
+import { StyleSheet } from 'react-native';
+import { Appbar, FAB, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const BOTTOM_APPBAR_HEIGHT = 80;
 const MEDIUM_FAB_HEIGHT = 56;
@@ -41,14 +41,14 @@ const Nav = () => {
 
 const styles = StyleSheet.create({
   bottom: {
-    backgroundColor: "aquamarine",
-    position: "absolute",
+    backgroundColor: 'aquamarine',
+    position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
   },
   fab: {
-    position: "absolute",
+    position: 'absolute',
     right: 16,
   },
 });
