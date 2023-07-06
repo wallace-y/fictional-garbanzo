@@ -4,6 +4,7 @@ import { name as appName } from "./app.json";
 import { PaperProvider } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import LandingPage from "./components/LandingPage.jsx";
+import Claim from "./components/Claim.jsx";
 import CouponBookList from "./components/CouponBookList.jsx";
 import IndividualCouponBook from "./components/IndividualCouponBook.jsx";
 import LoginScreen from "./components/LoginScreen.jsx";
@@ -64,7 +65,9 @@ export default function App() {
   const profileStackOptions = {
     headerShown: false,
     tabBarIcon: ({ focused, color, size }) => {
-      return <Ionicons name="person-circle-outline" size={size} color={color} />;
+      return (
+        <Ionicons name="person-circle-outline" size={size} color={color} />
+      );
     },
   };
 
@@ -73,6 +76,11 @@ export default function App() {
       <Stack.Screen
         name="Landing"
         component={LandingPage}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Claim"
+        component={Claim}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

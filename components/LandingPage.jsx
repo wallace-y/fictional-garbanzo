@@ -39,8 +39,11 @@ const LandingPage = ({ navigation }) => {
       >
         <Text style={[{ color: theme.colors.accent }]}>Show</Text> you care.
       </Text>
-      <Button mode="contained-tonal" onPress={() => navigation.navigate("Create")}>
+      <Button mode="contained" onPress={() => navigation.navigate("Create")}>
         Get Started
+      </Button>
+      <Button mode="elevated" onPress={() => navigation.navigate("Claim")}>
+        Claim a coupon book
       </Button>
     </View>
   );
