@@ -2,12 +2,12 @@
   "expo": {
     "name": "digital-coupon-book",
     "slug": "digital-coupon-book",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/charity-donation-hand-love-icon.png",
+      "image": "./assets/SmallIcon.png",
       "resizeMode": "contain",
       "backgroundColor": "#9381ff"
     },
@@ -19,11 +19,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/charity-donation-hand-love-icon.png",
+        "foregroundImage": "./assets/SmallIcon.png",
         "backgroundColor": "#9381ff"
       },
       "package": "com.wallacey.digitalcouponbook",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"
